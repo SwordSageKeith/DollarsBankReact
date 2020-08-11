@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import Home from "./comps/home/home";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import NewUser from "./comps/newUser/NewUser";
+import Login from './comps/login/login';
+import UserHome from './comps/user/user';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import userStorage from './comps/storage/userStorage';
+
+class App extends React.Component {
+  constructor(props){
+    super(props);
+    let store = new userStorage;
+    this.state = ({
+      storage: store
+    });
+  }
+  
+
+  render() {
+    return (
+      <BrowserRouter>
+        <Switch>
+          <Route path="/new" render = {(props) => <NewUser {...props} store = {this.state.storage}/>} />
+          <Route path="/login" render = {(props) => <Login {...props} store = {this.state.storage}/>} />
+          <Route path = "/user" render = {(props) => <UserHome {...props} store = {this.state.storage} />} />
+          <Route component={Home} />
+        </Switch>
+      </BrowserRouter>
+    );
+  }
 }
 
 export default App;
